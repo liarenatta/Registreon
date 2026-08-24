@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RegistreOn</title>
+</head>
+<body>
+    <header>
+        <h1>RegistreOn</h1>
+        <p>Registre problemas encontrados na sua cidade.</p>
+              
+    </header>
+
+    <main>
+        <section>
+            <h2>Sou Cidadão</h2>
+            <a href="#">
+                Cadastrar
+            </a>
+
+            <a href="#">
+                Entrar
+            </a>
+
+            <a href="#">
+                Acesso anônimo
+            </a>
+        </section>
+
+        <section>
+            <h2>Não quer se identificar?</h2>
+            <a href="{% url 'ocorrencias' %}">
+                Continuar sem identificação
+            </a>
+        </section>
+
+        <section>
+            <h2>Sou funcionário</h2>
+            <a href="#">
+                Acessar Painel
+            </a>
+        </section>
+
+    </main>
+
+    <button>Registrar Ocorrência</button>
+
+</body>
+</html>
