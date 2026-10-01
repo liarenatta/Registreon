@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Acesso anônimo</title>
+</head>
+<body class="bg-light">
+
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1 class="mb-0">Sistema de registro de reclamação</h1>
+        </div>
+    </header>    
+
+
+<main class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            
+            <div class="card shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <h2 class="mb-3">Acesso anônimo</h2>
+                    <p class="text-muted">Registre problemas de infraestrutura urbana sem precisar se identificar.</p>
+                    <p>Você poderá informar o local, descrever o problema e anexar fotos.</p>
+                
+                    <a href="{% url 'ocorrencias' %}" class="btn btn-primary w-100 mt-3">Continuar sem identificação </a>
+                    <a href="{% url 'inicio' %}" class="btn btn-outline-secondary w-100 mt-2">Voltar à página incial </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main> 
+    <script src="{%static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-1"> Registro Online</p>
+            <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+            <small class="text-muted"> 2026 </small>
+        </div>
+    </footer>
+</body>   
+</html>

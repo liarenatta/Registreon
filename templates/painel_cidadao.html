@@ -1,0 +1,274 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Painel do cidadão</title>
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+
+<body class="bg-light">
+
+<div class="container py-5">
+
+    <h2 class="mb-4">
+        Painel do cidadão
+    </h2>
+
+    <p class="mb-4">
+        Consulte suas solicitações ou registre uma nova ocorrência.
+    </p>
+
+
+    <!-- SOLICITAÇÕES DO CIDADÃO -->
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <strong>Minhas solicitações</strong>
+        </div>
+
+        <div class="card-body">
+
+            {% if solicitacoes %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nº</th>
+                                <th>Categoria</th>
+                                <th>Endereço</th>
+                                <th>Bairro</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for solicitacao in solicitacoes %}
+
+                                <tr>
+
+                                    <td>
+                                        <a href="{% url 'detalhe_cidadao' solicitacao.num_solicitacao %}">
+                                            {{ solicitacao.num_solicitacao }}
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        {{ solicitacao.categoria }}
+                                    </td>
+
+                                    <td>
+                                        {{ solicitacao.endereco }}
+                                    </td>
+
+                                    <td>
+                                        {{ solicitacao.bairro }}
+                                    </td>
+
+                                    <td>
+                                        {{ solicitacao.data_registro|date:"d/m/Y H:i" }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if solicitacao.status == "Pendente" %}
+                                            <span class="badge text-bg-secondary">
+                                                {{ solicitacao.status }}
+                                            </span>
+
+                                        {% elif solicitacao.status == "Em análise" %}
+                                            <span class="badge text-bg-info">
+                                                {{ solicitacao.status }}
+                                            </span>
+
+                                        {% elif solicitacao.status == "Em andamento" %}
+                                            <span class="badge text-bg-primary">
+                                                {{ solicitacao.status }}
+                                            </span>
+
+                                        {% elif solicitacao.status == "Concluída" %}
+                                            <span class="badge text-bg-success">
+                                                {{ solicitacao.status }}
+                                            </span>
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- BOTÕES -->
+    <div class="d-flex gap-2">
+
+        <a href="{% url 'ocorrencias' %}"
+           class="btn btn-primary">
+            Nova solicitação
+        </a>
+
+        <a href="{% url 'logout_cidadao' %}"
+           class="btn btn-secondary">
+            Sair
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+
+<!--
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Painel do Cidadão - Sistema de Registro de Reclamações </title>
+    
+</head>
+
+
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-success">
+        <a class="navbar-brand" href="{% url 'painel_cidadao' %}"> Registro de reclamações </a>
+        
+    <a href="{% url 'logout_cidadao' %}" class="btn btn-danger">Sair</a>
+
+    </nav>
+    <header class="bg-primary text-white py-4">
+        <div class="container">
+            <h2>Olá, {{ user.first_name }}! </h2>
+        </div>
+    </header>    
+
+-->
+<!-- Conteudo da pagina 
+<main class="container py-5">
+    <h2 class="mb-4">Painel do Cidadão</h2>
+
+   
+    <div>
+        <p>
+            <a href="{% url 'ocorrencias' %}" class="btn btn-primary"> Nova solicitação</a>
+        </p>
+        
+        
+    </div>
+
+    {% if ocorrencias %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-light">
+                    <tr>
+                        <th> Solicitações </th>
+                        <th> Categoria </th>
+                        <th> Endereço </th>
+                        <th> Bairro </th>
+                        <th> Data </th>
+                        <th> Status </th>
+                        <th> Foto </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for ocorrencia in ocorrencias %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detalhe_ocorrencia' ocorrencia.pk %}">
+                                    {{ ocorrencia.num_solicitacao }}
+                                </a>                       
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.categoria }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.endereco }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.bairro }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.data_registro|date:"d/m/Y H:i" }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.status }}
+                            </td>
+
+                            <td>
+                                {% if ocorrencia.foto %}
+                                    <a href="{{ ocorrencia.foto.url }}" target="_blank">
+                                        Visualizar foto
+                                    </a>
+                                {% else %}
+                                    Sem foto
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma ocorrência foi registrada ainda.
+        </div>
+    {% endif %}
+
+
+</main> 
+
+
+
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <p class="mb-1"> Registro Online</p>
+        <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+    </div>
+</footer>
+
+</body>   
+</html>
+-->

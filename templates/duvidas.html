@@ -1,21 +1,19 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-    <title>Login Funcionário | Sistema de Registro de Reclamações</title>
+    <title> Dúvidas Frequêntes | Sistema de Registro de Reclamaçõe s</title>
 </head>
 <body class="bg-light">
 
     <header class="bg-primary text-white py-3">
         <div class="container">
             <h1 class="h3 mb-0">Sistema de registro de reclamação</h1>
-            <p class="mb-0">Acesse sua conta</p>
+            <p class="mb-0">Dúvidas sobre os serviços prestados por cada secretaria municipal</p>
         </div>
     </header>    
 
@@ -27,7 +25,7 @@
             
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="text-center mb-4">Login Funcionário</h2>
+                    <h2 class="text-center mb-4"> Dúvidas Frequêntes | Sistema de Registro de Reclamações </h2>
                     
                     {% if messages %}
                         {% for message in messages %}
@@ -37,12 +35,12 @@
                         {% endfor %}
                     {% endif %}
 
-                    <form method="POST" action="{% url 'funcionario_login' %}">
+                    <form method="POST" enctype="multipart/form-data" id="formOcorrencia">
                         {% csrf_token %}
                         
                         <div class="mb-3">
                             <label for="email" class="form-label"> E-mail </label>
-                            <input type="email" class="form-control" id="email" name="email" required> 
+                            <input type="text" class="form-control" id="email" name="email" required> 
                         </div>
 
                         <div class="mb-3">
@@ -53,9 +51,13 @@
 
                         <button type="submit" class="btn btn-primary w-100"> Entrar </button>
 
+                        <p class="text-center mt-3 mb-0">Ainda não possui uma conta?
+                            <a href="{% url 'cadastro' %}" class="text-decoration-none">Cadastre-se</a>
+                        </p>
+
                         
                     <div class="text-center mt-3">
-                        <a href="{% url 'inicio' %}" class="text-decoration-none">Voltar à página incial </a>
+                        <a href="{% url'inciio'%}" class="text-decoration-none">Voltar à página incial </a>
                     </div>                    
                 </div>
             </div>

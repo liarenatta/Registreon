@@ -16,12 +16,55 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from ocorrencias import views
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.inicio),
+
+    #Página Inicial
+    path('', views.inicio, name='inicio'),
+
+    #Ocorrência
     path('ocorrencias/', views.ocorrencias, name='ocorrencias'),
+
+    #Cadstro e Login cidadão
+    path('cadastro/', views.cadastro, name='cadastro'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout_cidadao, name='logout_cidadao'),
+
+    path('anonimo/', views.anonimo, name='anonimo'),
+
+    path('painel-cidadao/', views.painel_cidadao, name='painel_cidadao'),  
+    path(
+        'painel-cidadao/solicitacao/<int:num_solicitacao>/',
+        views.detalhe_cidadao,
+        name='detalhe_cidadao'
+    ),
+
+    #Login do funcionário
+    path('funcionario/', views.funcionario_login, name='funcionario_login'),
+
+    path(
+        'painel-funcionario/',
+        views.PainelFuncionarioView.as_view(),
+        name='painel_funcionario'
+    ),
+    path(
+        'funcionario/sair/',
+        views.logout_funcionario,
+        name='logout_funcionario'
+    ),
+
+path('ocorrencia/<int:pk>/', views.DetalheOcorrenciaView.as_view(), name='detalhe_ocorrencia'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
+
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,99 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Cadastro | Sistema de Registro de Reclamações</title>
+</head>
+<body class="bg-light">
+
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1 class="h3 mb-0">Sistema de registro de reclamação</h1>
+            <p class="mb-0">Crie sua conta</p>
+        </div>
+    </header>    
+
+
+<main class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">Cadastro Cidadão</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" id="formCadastro">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="nome" class="form-label"> Nome completo </label>
+                            <input type="text" class="form-control" id="nome" name="nome" required> 
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label"> E-mail </label>
+                            <input type="email" class="form-control" id="email" name="email" required> 
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="telefone" class="form-label"> Telefone </label>
+                            <input type="text" class="form-control" id="telefone" name="telefone"> 
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="celular" class="form-label"> Celular </label>
+                            <input type="text" class="form-control" id="celular" name="celular" required> 
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="senha" class="form-label"> Senha </label>
+                            <input type="password" class="form-control" id="senha" name="senha" required> 
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmar_senha" class="form-label"> Confirmar senha </label>
+                            <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required> 
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100"> Cadastrar </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p class="text-center mt-3 mb-0">Já possui uma conta?
+                            <a href="{% url 'login' %}" class="text-decoration-none">Entrar</a>
+                        </p>
+                        <a href="{% url 'inicio' %}" class="text-decoration-none">Voltar à página inicial </a>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</main> 
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-1"> Registro Online</p>
+            <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+            <small class="text-muted"> 2026 </small>
+        </div>
+    </footer>
+</body>   
+</html>

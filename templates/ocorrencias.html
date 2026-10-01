@@ -1,15 +1,110 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
     <title>Registrar ocorrência</title>
 </head>
 <body>
-    <h1>Registrar ocorrência</h1>
 
-    <p>
-        Preencha os dados abaixo para registrar um problema de infraestrutura urbana.
-    </p>
-</body>
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1 class="mb-0">Sistema de registro de reclamação</h1>
+        </div>
+    </header>    
+
+
+<main class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <h2 class="mb-3">Registrar reclamação</h2>
+            <p class="text-muted mb-4">Preencha os dados abaixo para registrar um problema de infraestrutura urbana.</p>
+          
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        
+        <form method="POST" enctype="multipart/form-data" id="formOcorrencia">
+            {% csrf_token %}
+
+ 
+            <div class="mb-3">
+                <label for="categoria" class="form-label">Categoria: </label>
+                
+                <select class="form-selec" id="categoria" name="categoria" required>
+                    <option value="" selected disabled>Selecione uma categoria </option>
+                    <option value="Buraco na via pública">Buraco na via pública </option>
+                    <option value="Buraco na via pública">Buraco em via de calçamento (paralelepípedo)</option>
+                    <option value="Sinalização da via">Sinalização da via </option>
+                    <option value="Iluminação Pública">Iluminação Pública </option>
+                    <option value="Bueiros/Boca de lobo">Bueiros/Boca de lobo </option>
+                    <option value="Bueiros/Boca de lobo">Limpeza de vegetação em via pública </option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="endereco" class="form-label">Endereço: </label>
+                <input type="text" class="form-control" id="endereco" name="endereco" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="bairro" class="form-label">Bairro: </label>
+                <input type="text" class="form-control" id="bairro" name="bairro" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="ponto_referencia" class="form-label">Ponto de Referência: </label>
+                <input type="text" class="form-control" id="ponto_referencia" name="ponto_referencia" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="numero" class="form-label">Número: </label>
+                <input type="text" class="form-control" id="numero" name="numero" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição: </label>
+                <textarea  class="form-control" id="descricao" name="descricao" rows="5" required></textarea>
+            </div>
+
+
+            <div class="mb-4">
+                <label for="fotos" class="form-label">Fotos (opcional): </label>
+                <input type="file" class="form-control" id="fotos" name="foto">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar reclamação</button>
+            <div>
+                <a href="{% url 'painel_cidadao' %}" class="btn btn-secondary" >Voltar ao painel </a>
+                <a href="{% url 'minhas_solicitacoes' %}" class="btn btn-outline-primary" >Minhas solicitações</a>
+            </div>
+
+
+        </form>
+        </div>
+    </div>
+</main> 
+    <script src="{%static 'js/ocorrencia.js' %}"></script>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-1"> Registro Online</p>
+            <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+            <small class="text-muted"> 2026 </small>
+        </div>
+    </footer>
+</body>   
 </html>

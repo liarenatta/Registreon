@@ -1,0 +1,130 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Painel do funcionário</title>
+</head>
+
+
+<body>
+    <header class="bg-primary text-white py-4">
+        <div class="container">
+            <h1 class="mb-0">Painel do Funcionário</h1>
+
+            <p class="mb-0">Gerenciamento de ocorrências registradas</p>
+        </div>
+    </header>    
+
+
+<!-- Conteudo da pagina -->
+<main class="container py-5">
+    <h2 class="mb-4">Ocorrências Registradas</h2>
+
+    {% if ocorrencias %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-light">
+                    <tr>
+                        <th> Solicitações </th>
+                        <th> Categoria </th>
+                        <th> Endereço </th>
+                        <th> Bairro </th>
+                        <th> Data </th>
+                        <th> Status </th>
+                        <th> Foto </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for ocorrencia in ocorrencias %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detalhe_ocorrencia' ocorrencia.pk %}">
+                                    {{ ocorrencia.num_solicitacao }}
+                                </a>                       
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.categoria }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.endereco }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.bairro }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.data_registro|date:"d/m/Y H:i" }}
+                            </td>
+
+                            <td>
+                                {% if ocorrencia.status == "Pendente" %}
+                                    <span class="badge text-bg-secondary">
+                                        {{ ocorrencia.status }}
+                                    </span>
+
+                                {% elif ocorrencia.status == "Em análise" %}
+                                    <span class="badge text-bg-info">
+                                        {{ ocorrencia.status }}
+                                    </span>
+
+                                {% elif ocorrencia.status == "Em andamento" %}
+                                    <span class="badge text-bg-primary">
+                                        {{ ocorrencia.status }}
+                                    </span>
+
+                                {% elif ocorrencia.status == "Concluída" %}
+                                    <span class="badge text-bg-success">
+                                        {{ ocorrencia.status }}
+                                    </span>
+                                
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if ocorrencia.foto %}
+                                    <a href="{{ ocorrencia.foto.url }}" target="_blank">
+                                        Visualizar foto
+                                    </a>
+                                {% else %}
+                                    Sem foto
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma ocorrência foi registrada ainda.
+        </div>
+    {% endif %}
+
+
+</main> 
+
+
+
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <p class="mb-1"> Registro Online</p>
+        <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+    </div>
+</footer>
+
+</body>   
+</html>

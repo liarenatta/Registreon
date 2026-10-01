@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solicitação {{ ocorrencia.num_solicitacao }} | Registreon</title>
+
+    <link rel="stylesheet"
+          href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+
+<body class="bg-light">
+<div class="container py-5">
+
+    <h2 class="mb-4">
+        Solicitação nº {{ ocorrencia.num_solicitacao }}
+    </h2>
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <strong>Dados da solicitação</strong>
+        </div>
+
+        <div class="card-body">
+            <p>
+                <strong>Categoria:</strong>
+                {{ ocorrencia.categoria }}
+            </p>
+
+            {% if ocorrencia.subcategoria %}
+            <p>
+                <strong>Subcategoria:</strong>
+                {{ ocorrencia.subcategoria }}
+            </p>
+            {% endif %}
+
+            <p>
+                <strong>Endereço:</strong>
+                {{ ocorrencia.endereco }}
+            </p>
+
+            <p>
+                <strong>Bairro:</strong>
+                {{ ocorrencia.bairro }}
+            </p>
+
+            <p>
+                <strong>Descrição:</strong>
+                {{ ocorrencia.descricao }}
+            </p>
+
+            <p>
+                <strong>Data:</strong>
+                {{ ocorrencia.data_registro|date:"d/m/Y H:i" }}
+            </p>
+            <p>
+                <strong>Status:</strong>
+
+                {% if ocorrencia.status == "Pendente" %}
+
+                    <span class="badge text-bg-secondary">
+                        {{ ocorrencia.status }}
+                    </span>
+
+                {% elif ocorrencia.status == "Em análise" %}
+
+                    <span class="badge text-bg-info">
+                        {{ ocorrencia.status }}
+                    </span>
+
+                {% elif ocorrencia.status == "Em andamento" %}
+
+                    <span class="badge text-bg-primary">
+                        {{ ocorrencia.status }}
+                    </span>
+
+                {% elif ocorrencia.status == "Concluída" %}
+
+                    <span class="badge text-bg-success">
+                        {{ ocorrencia.status }}
+                    </span>
+
+                {% endif %}
+            </p>
+
+            {% if ocorrencia.foto %}
+                <p>
+                    <strong>Foto:</strong>
+                </p>
+
+                <a href="{{ ocorrencia.foto.url }}" target="_blank">
+                    <img src="{{ ocorrencia.foto.url }}" class="img-fluid rounded" style="max-width: 400px;" alt="Foto da solicitação">
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <strong>Mensagens</strong>
+        </div>
+
+        <div class="card-body">
+            {% if mensagens_ocorrencia %}
+                {% for mensagem in mensagens_ocorrencia %}
+
+                    <div class="border rounded p-3 mb-3">
+
+                        <strong>
+                            {{ mensagem.autor.first_name|default:mensagem.autor.username }}
+                        </strong>
+
+                        <small class="text-muted">
+                            — {{ mensagem.data_envio|date:"d/m/Y H:i" }}
+                        </small>
+
+                        <p class="mb-0 mt-2">
+                            {{ mensagem.texto }}
+                        </p>
+
+                    </div>
+                {% endfor %}
+            {% else %}
+
+                <p class="text-muted">
+                    Nenhuma mensagem enviada.
+                </p>
+            {% endif %}
+
+
+            <!-- ENVIANDO MENSAGEM-->
+
+            <form method="POST" class="mt-4">
+
+                {% csrf_token %}
+
+                <label for="texto" class="form-label">
+                    Enviar mensagem
+                </label>
+
+                <textarea
+                    name="texto"
+                    id="texto"
+                    class="form-control mb-3"
+                    rows="4"
+                    placeholder="Digite sua mensagem..."
+                    required></textarea>
+
+                <button type="submit" class="btn btn-primary">
+                    Enviar mensagem
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+    <div class="mt-3">
+        <a href="{% url 'painel_cidadao' %}"
+           class="btn btn-secondary">
+            Voltar ao painel
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

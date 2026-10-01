@@ -1,0 +1,129 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Detalhes da ocorrência</title>
+</head>
+
+<body>
+
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1 class="mb-0">Detalhes da ocorrência</h1>
+            <p class="mb-0">Viasualização da solicitação registrada</p>
+        </div>
+    </header>    
+
+
+<main class="container py-5">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+
+            <h2 class="mb-4">Solicitação {{ ocorrencia.num_solicitacao }}</h2>
+            <p class="text-muted mb-4">Preencha os dados abaixo para registrar um problema de infraestrutura urbana.</p>
+          
+            <p><strong>Categoria:</strong> {{ ocorrencia.categoria }} </p>
+            <p><strong>Endereço:</strong> {{ ocorrencia.endereco }} </p>
+            <p><strong>Bairro:</strong> {{ ocorrencia.bairro }} </p>
+            <p><strong>Descrição:</strong> {{ ocorrencia.descricao }} </p>
+
+            <p> 
+                <strong>Data do Registro: </strong> {{ ocorrencia.data_registro|date:"d/m/Y H:i" }}
+            </p>
+
+            <p> 
+                <strong>Status atual: </strong> 
+                {% if ocorrencia.status == "Pendente" %}
+                    <span class="badge text-bg-secondary">
+                        {{ ocorrencia.status }}
+                    </span>
+
+                {% elif ocorrencia.status == "Em análise" %}
+                    <span class="badge text-bg-info">
+                         {{ ocorrencia.status }}
+                    </span>
+
+                {% elif ocorrencia.status == "Em andamento" %}
+                    <span class="badge text-bg-primary">
+                         {{ ocorrencia.status }}
+                    </span>
+
+                {% elif ocorrencia.status == "Concluída" %}
+                    <span class="badge text-bg-success">
+                         {{ ocorrencia.status }}
+                    </span>
+                
+                {% endif %}
+
+            </p> 
+            <hr>
+
+            <h3 class="mb-3">Atualizar status</h3>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Selecione novo status</label>
+
+                    <select name="status" id="status" class="form-select" required>
+                        {% for valor, nome in status_choices %}
+                            <option value="{{ valor }}"
+                                {% if ocorrencia.status == valor %}selected{% endif %}>
+                                {{ nome }}
+                            </option>
+                        {% endfor %}
+
+
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar status</button>
+            </form>
+            <hr>
+            <h3 class="mb-3">Foto</h3>
+            {% if ocorrencia.foto %}
+                <img src="{{ ocorrencia.foto.url }}"
+                    alt="Foto"
+                    class="img-fluid rounded"
+                    style="max-width: 500px;">       
+            
+            {% else %}
+                <p class="text-muted">Nenhuma foto foi anexada.</p>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'painel_funcionario' %}"
+                   class="btn btn-secondary"> Voltar ao painel
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-1"> Registro Online</p>
+            <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+            <small class="text-muted"> 2026 </small>
+        </div>
+    </footer>
+</body>   
+
+</html>

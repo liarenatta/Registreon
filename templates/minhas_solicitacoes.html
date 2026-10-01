@@ -1,0 +1,285 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Minhas solicitações</title>
+
+    <link rel="stylesheet"
+          href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+
+<body class="bg-light">
+
+<div class="container py-5">
+
+    <h2 class="mb-4">Minhas solicitações</h2>
+
+    {% if solicitacoes %}
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>Nº Solicitação</th>
+                    <th>Categoria</th>
+                    <th>Endereço</th>
+                    <th>Bairro</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for solicitacao in solicitacoes %}
+
+                    <tr>
+
+                        <td>
+                            <a href="{% url 'detalhe_cidadao' solicitacao.num_solicitacao %}">
+                                {{ solicitacao.num_solicitacao }}
+                            </a>
+                        </td>
+
+                        <td>
+                            {{ solicitacao.categoria }}
+                        </td>
+
+                        <td>
+                            {{ solicitacao.endereco }}
+                        </td>
+
+                        <td>
+                            {{ solicitacao.bairro }}
+                        </td>
+
+                        <td>
+                            {{ solicitacao.data_registro|date:"d/m/Y H:i" }}
+                        </td>
+
+                        <td>
+                            {{ solicitacao.status }}
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <div class="alert alert-info">
+            Nenhuma solicitação foi registrada.
+        </div>
+
+    {% endif %}
+
+    <a href="{% url 'painel_cidadao' %}" class="btn btn-secondary">
+        Voltar ao painel
+    </a>
+
+    <a href="{% url 'ocorrencias' %}" class="btn btn-primary">
+        Nova solicitação
+    </a>
+
+</div>
+
+</body>
+</html>
+
+
+<!-- {% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Minhas Solicitações</title>
+</head>
+
+
+<body>
+    <header class="bg-primary text-white py-4">
+        <div class="container">
+            <p class="mb-0">Minhas Solicitações</p>
+        </div>
+    </header>    
+<main class="container py-5">
+    <h2 class="mb-4">Ocorrências Registradas</h2>
+
+    {% if ocorrencias %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-light">
+                    <tr>
+                        <th> Solicitações </th>
+                        <th> Categoria </th>
+                        <th> Endereço </th>
+                        <th> Bairro </th>
+                        <th> Data </th>
+                        <th> Status </th>
+                        <th> Foto </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for ocorrencia in ocorrencias %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detalhe_cidadao' solicitacao.pk %}">
+                                    {{ ocorrencia.num_solicitacao }}
+                                </a>                       
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.categoria }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.endereco }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.bairro }}
+                            </td>
+
+                            <td>
+                                {{ ocorrencia.data_registro|date:"d/m/Y H:i" }}
+                            </td>
+
+                            <td>
+                                {% if ocorrencia.status == "Pendente" %}
+                                    <span class="badge text-bg-secondary">
+                                        {{ ocorrencia.status }}
+                                    </span>
+
+                                {% elif ocorrencia.status == "Em análise" %}
+                                    <span class="badge text-bg-info">
+                                        {{ ocorrencia.status }}
+                                    </span>
+
+                                {% elif ocorrencia.status == "Em andamento" %}
+                                    <span class="badge text-bg-primary">
+                                        {{ ocorrencia.status }}
+                                    </span>
+
+                                {% elif ocorrencia.status == "Concluída" %}
+                                    <span class="badge text-bg-success">
+                                        {{ ocorrencia.status }}
+                                    </span>
+                                
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if ocorrencia.foto %}
+                                    <a href="{{ ocorrencia.foto.url }}" target="_blank">
+                                        Visualizar foto
+                                    </a>
+                                {% else %}
+                                    Sem foto
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma ocorrência foi registrada ainda.
+        </div>
+    {% endif %}
+    
+    <div class="mt-4">
+        <a href="{% url 'painel_cidadao' %}" class="btn btn-secondary"> Voltar ao painel principal</a>
+        <a href="{% url 'ocorrencias' %}" class="btn btn-primary"> Voltar ao painel principal</a>
+
+    </div>
+
+<
+
+<!-- Conteudo da pagina 
+<main class="container py-5">   
+    <h1 class="mb-4">Minhas Solicitações</h2>
+
+        <p class="text-muted">
+            Consulte aqui as solicitações que você já registrou.
+        </p>
+
+    {% if ocorrencias %}
+        {% for solicitacao in solicitacoes%}
+
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Solicitação {{solicitacao.num_solicitacao}}
+                    </h5>
+
+                    <p>
+                        <strong>Categoria:</strong>
+                        {{ solicitacao.categoria}}
+                    </p>
+
+                    <p>
+                        <strong>Endereco:</strong>
+                        {{ solicitacao.endereco}}
+                    </p>
+
+                    <p>
+                        <strong>Bairro:</strong>
+                        {{ solicitacao.bairro}}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {{ solicitacao.status}}
+                    </p>
+
+                    <p>
+                        <strong>Data:</strong>
+                        {{ solicitacao.data_registro|date:"d/m/Y H:i"}}
+                    </p>
+
+                    <a href="{% url 'detalhe_cidadao' solicitacao.num_solicitacao %}" 
+                        class="btn btn-primary"> 
+                        Ver solicitacao             
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma ocorrência foi registrada ainda.
+        </div>
+    {% endif %}
+
+    -->
+</main> 
+
+
+
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <p class="mb-1"> Registro Online</p>
+        <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+    </div>
+</footer>
+
+</body>   
+</html>

@@ -1,50 +1,136 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RegistreOn</title>
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    
+
+    <title>Registrar ocorrência</title>
 </head>
 <body>
-    <header>
-        <h1>RegistreOn</h1>
-        <p>Registre problemas encontrados na sua cidade.</p>
-              
-    </header>
+    <header class="bg-primary text-white py-5">
+        <div class="container">
+            <h1 class="display-4">Sistema de registro de reclamação</h1>
 
-    <main>
-        <section>
-            <h2>Sou Cidadão</h2>
-            <a href="#">
-                Cadastrar
-            </a>
+            <p class="lead mb-0">
+                Regitre problemas encontrados em sua cidade!
+            </p>
+        </div>
+    </header>    
 
-            <a href="#">
-                Entrar
-            </a>
 
-            <a href="#">
-                Acesso anônimo
-            </a>
-        </section>
+<!-- Conteudo da pagina -->
+<main class="container py-5">
 
-        <section>
-            <h2>Não quer se identificar?</h2>
-            <a href="{% url 'ocorrencias' %}">
-                Continuar sem identificação
-            </a>
-        </section>
+    <div class="row g-4 justify-content-center">
 
-        <section>
-            <h2>Sou funcionário</h2>
-            <a href="#">
-                Acessar Painel
-            </a>
-        </section>
+        <!--Cidadão-->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
 
-    </main>
+                    <h2 class="card-title h4 mb-3">Sou cidadão</h2>
 
-    <button>Registrar Ocorrência</button>
+                    <p class="text-muted">Acesse sua conta ou cadastre-se para registrar e acompanhar suas ocorrências</p>
 
-</body>
+                    <div class="d-grid gap-2">                        
+                        <a href="{% url 'cadastro'%}" class="btn btn-primary">Cadastrar </a>
+                        <a href="{% url 'login'%}" class="btn btn-outline-primary">Entrar </a>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Anonimo-->
+         <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">                 
+                    <h2 class="card-title h4 mb-3">Acesso Anônimo</h2>
+
+                    <p class="text-muted">Registre um problema de infraestrutura urbana sem informar seus dados pessoais. </p>
+
+                    <div>
+                        <a href="{% url 'anonimo' %}" class="btn btn-primary">Continuar sem identificação</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Funcionario -->
+         <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="card-title h4 mb-3">Sou Funcionário</h2>
+
+                    <p class="text-muted">Acesse o painel para visualizar e gerenciar as ocorrências registradas.</p>
+
+                    <div class="d-grid">
+                        <a href="{% url 'funcionario_login'%}" class="btn btn-dark">Acessar Painel </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>    
+</main> 
+
+
+<script src="{%static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <p class="mb-1"> Registro Online</p>
+        <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+    </div>
+</footer>
+
+</body>   
 </html>
+
+        <!--   
+        <form method="POST">
+            {% csrf_token %}
+
+ 
+            <div class="mb-3">
+                <label for="categoria" class="form-label">Categoria: </label>
+                <input type="text" class="form-control" id="categoria" name="categoria" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="endereco" class="form-label">Endereço: </label>
+                <input type="text" class="form-control" id="endereco" name="endereco" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="bairro" class="form-label">Bairro: </label>
+                <input type="text" class="form-control" id="bairro" name="bairro" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição: </label>
+                <textarea  class="form-control" id="descricao" name="descricao" rows="5" required></textarea>
+            </div>
+
+
+            <div class="mb-4">
+                <label for="fotos" class="form-label">Fotos (opcional): </label>
+                <input type="file" class="form-control" id="fotos" name="fotos" required>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary">Enviar reclamação</button>
+            <button type="submit" class="btn btn-danger">Teste</button>
+    
+        </form>
+        </div>
+
+        --> 
