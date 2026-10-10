@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    
+
+    <title>Consultar solicitacao</title>
+</head>
+<body>
+    <header class="bg-primary text-white py-5">
+        <div class="container">
+            <h1 class="display-4">Sistema de registro de reclamação</h1>
+
+            <p class="lead mb-0">
+                Regitre problemas encontrados em sua cidade!
+            </p>
+        </div>
+    </header>    
+
+
+<!-- Conteudo da pagina -->
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+
+                        <h1 class="card-title h4 mb-3">Consultar minhas solicitações</h2>
+                        <p class="text-muted">Acompanhe suas solicitações aqui</p>
+
+                        {% if erro %}
+                            <div class="alert alert-danger">
+                                {{ erro }}
+                            </div>
+                        {% endif %}
+
+                        <form method="post" action="{% url 'consultar_solicitacoes' %}">
+
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="num_solicitacao" class="form-label"> Número da solicitacao </label>
+                                <input type="text" id="num_solicitacao" name="num_solicitacao" min="1" required
+                                value="{{ request.POST.num_solicitacao|default:'' }}" placeholder="Ex: 4">                    
+                            </div>
+                            <div class="mb-3">
+                                <label for="cod_acompanhamento" class="form-label"> Código de Acompanhamento </label>
+                                <input type="text" id="cod_acompanhamento" class="form-control" name="cod_acompanhamento"
+                                 maxlength="20" autocomplete="off" style="text-transform:  uppercase;" placeholder="Ex: 86BA8534BE">                    
+                            </div>             
+
+                            <button type="submit" class="btn btn-primary" w-100> Consultar solicitação</button>
+                        
+                        
+                        {% if ocorrencia %}
+                            <hr class="my-4">
+                            <h2 class="h5 mb-3">Dados da ocorrencia</h2>
+
+                            <p><strong>Número:</strong>{{ ocorrencia.num_solicitacao }}</p>
+                            <p><strong>Categoria:</strong>{{ ocorrencia.categoria }}</p>
+                            
+                            {% if ocorrencia.subcategoria %}
+                                <p><strong>Subcategoria:</strong>{{ ocorrencia.subcategoria }}</p>
+                            {% endif %}
+                            
+                            <p><strong>Endereço:</strong>{{ ocorrencia.endereco }}</p>
+                            <p><strong>Bairro:</strong>{{ ocorrencia.bairro }}</p>
+                            <p><strong>Descrição:</strong>{{ ocorrencia.descricao|linebreaksbr }}</p>
+                            <p><strong>Descrição:</strong>{{ ocorrencia.descricao|date:'d/m/Y H:i' }}</p>
+                            <p><strong>Status atual:</strong><span class="bagde bg-primary"> {{ocorrencia.status }} </span></p>
+                            
+                            {% if ocorrencia.foto %}
+                                <p>
+                                    <strong>Foto: </strong>
+
+                                </p>
+                                <a href=" {{ ocorrencia.foto.url }}" target="_blank" rel="noopener noreferrer"> Visualizar Foto
+                            {% endif %}
+                        {% endif %}
+                        </form>
+                        <hr class="my-4">
+                        
+                        <div class="text-center">
+                            <a href="{% url 'inicio' %}" class="btn btn-outline-secondary"> Voltar ao painel inicial</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </main> 
+
+
+<script src="{%static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <p class="mb-1"> Registro Online</p>
+        <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+    </div>
+</footer>
+
+</body>   
+
+</html>

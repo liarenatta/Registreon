@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from ocorrencias import views
 
 from ocorrencias import views
 
@@ -57,6 +58,13 @@ urlpatterns = [
         views.logout_funcionario,
         name='logout_funcionario'
     ),
+
+    path(
+        'consultar-solicitacoes/',
+        views.consultar_solicitacao,
+        name='consultar_solicitacoes'
+    ),
+
 
 path('ocorrencia/<int:pk>/', views.DetalheOcorrenciaView.as_view(), name='detalhe_ocorrencia'),
 ]

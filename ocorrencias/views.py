@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.shortcuts import render, redirect
+import secrets
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -83,6 +83,7 @@ def anonimo(request):
 
 
 def ocorrencias(request):
+
     if request .method == 'POST':
         categoria = request.POST.get('categoria')
         endereco = request.POST.get('endereco')
@@ -90,21 +91,32 @@ def ocorrencias(request):
         descricao = request.POST.get('descricao')
         foto = request.FILES.get('foto')
 
-        Ocorrencia.objects.create(
+
+        codigo = secrets.token_hex(5).upper()
+
+        if request.user.is_authenticated:
+            cidadao = request.user
+        else:
+            cidadao = None
+
+        ocorrencia = Ocorrencia.objects.create(
+           
             categoria = categoria,
             endereco = endereco,
             bairro = bairro,
             descricao = descricao,
             foto = foto,
-            cidadao=request.user
+            cidadao = cidadao,
+            cod_acompanhamento = codigo
+
         )  
 
-        messages.success(
-            request,
-            'Ocorrência registrada com sucesso!'
+        return render(
+            request, 'confirmacao_ocorrencia.html',
+            {
+                'ocorrencia': ocorrencia
+            }
         )
-
-        return redirect('ocorrencias')
     return render(request, 'ocorrencias.html')
 
 
@@ -400,5 +412,34 @@ class PaineelFuncionarioView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
+def consultar_solicitacao(request):
+    erro = None
+    ocorrencia = None
 
+    if request.method == 'POST':
+        numero = request.POST.get('num_solicitacao', '').strip()
+        codigo = request.POST.get('cod_acompanhamento', '').strip().upper()
+
+        if not numero or not codigo:
+            erro = 'Informe o número e o código de acompanhamento.'
+        
+        elif not numero.isdigit():
+            erro = 'O número da solicitação é inválido.'
+        else:
+            ocorrencia = Ocorrencia.objects.filter(
+                num_solicitacao=int(numero),
+                cod_acompanhamento=codigo
+            ).first()
+
+            if ocorrencia is None:
+                erro = ('Não encontramos um solicitação com esses dados. Confira o número e o código de acompanhamento')
+    
+    return render(
+        request,
+        'consultar_solicitacoes.html',
+        {
+            'ocorrencia': ocorrencia,
+            'erro': erro,
+        }
+    )
 

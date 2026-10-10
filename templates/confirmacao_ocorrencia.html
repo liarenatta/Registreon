@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <title>Solicitação registrada </title>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            <h2 class="text-center mb-4">
+                Solicitação registrada com sucesso!
+            </h2>
+
+            <p class="text-center">
+                Sua ocorrência foi registrada com sucesso.
+            </p>
+
+            <hr>
+
+            <div class="text-center">
+
+                <h5>Número da solicitação:</h5>
+                <p class="fs-3">
+                    <strong>{{ ocorrencia.num_solicitacao }}</strong>
+                </p>
+
+                <h5>Código de acompanhamento:</h5>
+                <p class="fs-3">
+                    <strong>{{ ocorrencia.cod_acompanhamento }}</strong>
+                </p>
+
+            </div>
+
+            <div class="alert alert-warning mt-4">
+                <strong>Importante!</strong><br>
+                Guarde o número da solicitação e o código de acompanhamento.
+                Eles serão necessários para consultar o andamento da sua solicitação.
+            </div>
+
+            <div class="text-center mt-4">
+
+                <a href="{% url 'consultar_solicitacoes' %}" class="btn btn-secondary">
+                    Voltar ao início
+                </a>
+
+                <a href="{% url 'inicio' %}" class="btn btn-secondary">
+                    Voltar ao início
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-1"> Registro Online</p>
+            <small class="text-muted"> Sistema de registro de problemas de infraestrutura</small>
+            <small class="text-muted"> 2026 </small>
+        </div>
+    </footer>
+</body>   
+</html>
