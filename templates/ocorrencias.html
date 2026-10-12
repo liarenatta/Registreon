@@ -8,9 +8,16 @@
 
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/ocorrencia.js' %}?v=2"></script>
+
 
     <title>Registrar ocorrência</title>
 </head>
+
+
+
+
+
 <body>
 
     <header class="bg-primary text-white py-3">
@@ -55,20 +62,55 @@
                 </select>
             </div>
 
+
+            
             <div class="mb-3">
-                <label for="endereco" class="form-label">Endereço: </label>
-                <input type="text" class="form-control" id="endereco" name="endereco" required>
+                <label for="bairro" class="form-label">Bairro:</label>
+                <select class="form-select" id="bairro" name="bairro" required>
+                    <option value="" selected disabled>Selecione um bairro</option>
+                    {% for item in bairros %}
+                        <option value="{{ item.id }}">{{ item.nome }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
+          <div class="mb-3">
+            <label for="endereco" class="form-label">Rua:</label>
+            <select class="form-select" id="endereco" name="endereco" required disabled>
+                <option value="">Selecione primeiro um bairro</option>
+                {% for rua in ruas %}
+                    <option value="{{ rua.nome }}" data-bairro-id="{{ rua.bairro_id }}">
+                        {{ rua.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
             <div class="mb-3">
                 <label for="bairro" class="form-label">Bairro: </label>
                 <input type="text" class="form-control" id="bairro" name="bairro" required>
             </div>
-
+-->
             <div class="mb-3">
                 <label for="ponto_referencia" class="form-label">Ponto de Referência: </label>
                 <input type="text" class="form-control" id="ponto_referencia" name="ponto_referencia" required>
             </div>
+
+
 
             <div class="mb-3">
                 <label for="numero" class="form-label">Número: </label>
@@ -98,7 +140,7 @@
         </div>
     </div>
 </main> 
-    <script src="{%static 'js/ocorrencia.js' %}"></script>
+    <script src="{% static 'js/ocorrencia.js' %}"></script>
 
     <footer class="bg-light text-center py-4 mt-5">
         <div class="container">
@@ -109,3 +151,6 @@
     </footer>
 </body>   
 </html>
+
+
+

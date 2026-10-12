@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout
 
-from .models import Ocorrencia, MensagemOcorrencia
+from .models import Ocorrencia, MensagemOcorrencia, Bairro, Rua
 
 
 
@@ -61,8 +61,7 @@ def login(request):
 
         if usuario_autenticado is not None:
             auth_login(request, usuario_autenticado)
-
-            messages.success(request, 'Loguin realizado com sucesso!')
+            messages.success(request, 'Login realizado com sucesso!')
             return redirect('painel_cidadao')
 
         messages.error(request, 'E-mail ou senha incorretos.')
@@ -71,11 +70,9 @@ def login(request):
     return render(request, 'login.html')
 
 
-
 def logout_cidadao(request):
     logout(request)
     return redirect('inicio')
-
 
 
 def anonimo(request):
@@ -90,8 +87,8 @@ def ocorrencias(request):
         bairro = request.POST.get('bairro')
         descricao = request.POST.get('descricao')
         foto = request.FILES.get('foto')
-
-
+        numero = request.POST.get('numero', '')
+        ponto_referencia = request.POST.get('ponto_referencia', '')
         codigo = secrets.token_hex(5).upper()
 
         if request.user.is_authenticated:
@@ -99,32 +96,41 @@ def ocorrencias(request):
         else:
             cidadao = None
 
+        
         ocorrencia = Ocorrencia.objects.create(
-           
-            categoria = categoria,
-            endereco = endereco,
-            bairro = bairro,
-            descricao = descricao,
-            foto = foto,
-            cidadao = cidadao,
-            cod_acompanhamento = codigo
-
-        )  
+            categoria=categoria,
+            endereco=endereco,
+            bairro=bairro,
+            descricao=descricao,
+            foto=foto,
+            cidadao=cidadao,
+            cod_acompanhamento=codigo,
+            numero=numero,
+            ponto_referencia=ponto_referencia
+        )
 
         return render(
-            request, 'confirmacao_ocorrencia.html',
+            request,
+            'confirmacao_ocorrencia.html',
             {
                 'ocorrencia': ocorrencia
             }
         )
-    return render(request, 'ocorrencias.html')
+
+    bairros = Bairro.objects.all()
 
 
+    ruas = Rua.objects.select_related('bairro').all()
 
+    return render(
+        request,
+        'ocorrencias.html',
+        {
+            'bairros': bairros,
+            'ruas': ruas
+        }
+    )
 
-
-def funcionario_login(request):
-    return render(request, 'funcionario_login.html')
 
 
 class DetalheOcorrenciaView(DetailView):
@@ -214,106 +220,11 @@ def funcionario_required(user):
 ##Verificando se é funcionari 
 
 
+
 def funcionario_login(request):
 
-    print("================================")
-    print("FUNCIONARIO LOGIN")
-    print("METHOD:", request.method)
-    print("POST:", request.POST)
-    print("================================")
+    # Quando a página é aberta normalmente,apenas mostra a tela de login.
 
-    if request.method == 'GET':
-        return render(
-            request,
-            'funcionario_login.html'
-        )
-
-    if request.method == 'POST':
-
-        email = request.POST.get('email')
-        senha = request.POST.get('senha')
-
-        print("EMAIL:", email)
-        print("SENHA:", senha)
-
-        try:
-            usuario = User.objects.get(
-                username=email
-            )
-
-        except User.DoesNotExist:
-
-            print("USUÁRIO NÃO ENCONTRADO")
-
-            messages.error(
-                request,
-                'E-mail ou senha incorretos.'
-            )
-
-            return redirect(
-                'funcionario_login'
-            )
-
-        print("USUÁRIO ENCONTRADO:", usuario.username)
-        print("IS STAFF:", usuario.is_staff)
-
-        usuario_autenticado = authenticate(
-            request,
-            username=usuario.username,
-            password=senha
-        )
-
-        print(
-            "AUTENTICADO:",
-            usuario_autenticado
-        )
-
-        if usuario_autenticado is None:
-
-            print("SENHA INCORRETA")
-
-            messages.error(
-                request,
-                'E-mail ou senha incorretos.'
-            )
-
-            return redirect(
-                'funcionario_login'
-            )
-
-        if not usuario_autenticado.is_staff:
-
-            print("NÃO É FUNCIONÁRIO")
-
-            messages.error(
-                request,
-                'Este usuário não possui acesso ao painel do funcionário.'
-            )
-
-            return redirect(
-                'funcionario_login'
-            )
-
-        print("LOGIN FUNCIONÁRIO REALIZADO")
-
-        auth_login(
-            request,
-            usuario_autenticado
-        )
-
-        return redirect(
-            'painel_funcionario'
-        )
-
-    return redirect(
-        'funcionario_login'
-    )
-
-#
-def funcionario_logina(request):
-
-    # Quando a página é aberta normalmente,
-    # apenas mostra a tela de login.
     if request.method == 'GET':
         return render(request, 'funcionario_login.html')
 
@@ -357,26 +268,24 @@ def funcionario_logina(request):
     return redirect('funcionario_login')
 
 
-
-
 @login_required(login_url='funcionario_login')
 @user_passes_test(funcionario_required, login_url='funcionario_login')
 def logout_funcionario(request):
-    logout(request)
-    return redirect('inicio')
+
+    if request.method == 'POST':
+        logout(request)
+        messages.success(request, 'Você saiu do painel de funcionário.')
+        return redirect('inicio')
+    return redirect('painel_funcionario')
+
 
 class PainelFuncionarioView(ListView):
-
     model = Ocorrencia
-
     template_name = 'painel_funcionario.html'
-
     context_object_name = 'ocorrencias'
-
     ordering = ['-data_registro']
 
     def dispatch(self, request, *args, **kwargs):
-
         if not request.user.is_authenticated:
             return redirect('funcionario_login')
 
@@ -386,30 +295,8 @@ class PainelFuncionarioView(ListView):
                 'Você não possui acesso ao painel do funcionário.'
             )
             return redirect('funcionario_login')
-
-        return super().dispatch(
-            request,
-            *args,
-            **kwargs
-        )
-
-class PaineelFuncionarioView(ListView):
-    model = Ocorrencia
-    template_name = 'painel_funcionario.html'
-    context_object_name = 'ocorrencias'
-    ordering = ['-data_registro']
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('funcionario_login')
-
-        if not request.user.is_staff:
-            messages.error(
-                request, 'Você não possui acesso ao painel no funcionario'
-            )
-        return redirect('funcionario_login')
-    
         return super().dispatch(request, *args, **kwargs)
+
 
 
 def consultar_solicitacao(request):

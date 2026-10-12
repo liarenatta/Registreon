@@ -7,22 +7,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
     <title>Painel do funcionário</title>
 </head>
 
-
 <body>
-    <header class="bg-primary text-white py-4">
-        <div class="container">
-            <h1 class="mb-0">Painel do Funcionário</h1>
+   <header class="bg-primary text-white py-4">
 
-            <p class="mb-0">Gerenciamento de ocorrências registradas</p>
+        <div class="container">
+            
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h1 class="mb-1">Painel do Funcionário</h1>
+                    <p class="mb-0">Gerenciamento de ocorrências registradas</p>
+                </div>
+
+                <form method="post" action="{% url 'logout_funcionario' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-light">
+                        Sair
+                    </button>
+                </form>
+            </div>
         </div>
-    </header>    
+
+    </header>   
 
 
 <!-- Conteudo da pagina -->
