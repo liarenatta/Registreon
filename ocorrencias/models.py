@@ -51,7 +51,14 @@ class Ocorrencia(models.Model):
     num_solicitacao = models.AutoField(primary_key=True)
     categoria = models.CharField(max_length=100)
     endereco = models.CharField(max_length=255)
-    bairro = models.CharField(max_length=100)
+    bairro = models.ForeignKey(
+        Bairro,
+        on_delete=models.PROTECT,
+        related_name='ocorrencias',
+        null=True,
+        blank=True
+    )
+    
 
     numero = models.CharField(max_length=30, blank=True, default='')
     ponto_referencia = models.CharField(max_length=255, blank=True, default='')

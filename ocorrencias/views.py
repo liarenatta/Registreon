@@ -84,7 +84,8 @@ def ocorrencias(request):
     if request .method == 'POST':
         categoria = request.POST.get('categoria')
         endereco = request.POST.get('endereco')
-        bairro = request.POST.get('bairro')
+        bairro_id = request.POST.get('bairro')
+        bairro = get_object_or_404(Bairro, id=bairro_id)
         descricao = request.POST.get('descricao')
         foto = request.FILES.get('foto')
         numero = request.POST.get('numero', '')

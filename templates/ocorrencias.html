@@ -67,9 +67,14 @@
             <div class="mb-3">
                 <label for="bairro" class="form-label">Bairro:</label>
                 <select class="form-select" id="bairro" name="bairro" required>
-                    <option value="" selected disabled>Selecione um bairro</option>
-                    {% for item in bairros %}
-                        <option value="{{ item.id }}">{{ item.nome }}</option>
+                    <option value="" selected disabled>
+                        Selecione um bairro
+                    </option>
+
+                    {% for bairro in bairros %}
+                        <option value="{{ bairro.id }}">
+                            {{ bairro.nome }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
