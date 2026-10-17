@@ -47,13 +47,23 @@
 
             <div class="text-center mt-4">
 
-                <a href="{% url 'consultar_solicitacoes' %}" class="btn btn-secondary">
-                    Ver minhas solicitações
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'painel_cidadao' %}" class="btn btn-primary">
+                        Minhas solicitações
+                    </a>
 
-                <a href="{% url 'inicio' %}" class="btn btn-secondary">
-                    Voltar ao início
-                </a>
+                    <a href="{% url 'painel_cidadao' %}" class="btn btn-secondary">
+                        Voltar ao painel
+                    </a>
+                {% else %}
+                    <a href="{% url 'consultar_solicitacoes' %}" class="btn btn-primary">
+                        Consultar minha solicitação
+                    </a>
+
+                    <a href="{% url 'inicio' %}" class="btn btn-secondary">
+                        Voltar ao início
+                    </a>
+                {% endif %}
 
             </div>
 
